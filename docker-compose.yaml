@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  api:
+    build: .
+    command: python -m src
+    container_name: password_validation_api
+    restart: always
+    ports:
+      - '5000:5000'
+    networks:
+      - main_network
+
+networks:
+  main_network:
+    driver: bridge
