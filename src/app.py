@@ -5,6 +5,7 @@ from src.controllers.password_controller import password_controller as password_
 
 
 app = Flask(__name__)
+app.debug = True
 
 app.register_blueprint(password_controller_blueprint)
 

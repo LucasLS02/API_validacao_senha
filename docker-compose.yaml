@@ -7,7 +7,9 @@ services:
     container_name: password_validation_api
     restart: always
     ports:
-      - '5000:5000'
+      - '8080:8080'
+    volumes:
+      - ./:/opt/program
     networks:
       - main_network
 
