@@ -13,7 +13,7 @@ class PasswordRulesSchema(Schema):
 
 
 class PasswordSchema(Schema):
-    password = fields.String(required=True, allow_none=False)
+    password = fields.String(required=True, allow_none=False, validate=validate.Length(min=1))
     rules = fields.List(fields.Nested(PasswordRulesSchema), required=True, allow_none=False)
 
     class Meta:

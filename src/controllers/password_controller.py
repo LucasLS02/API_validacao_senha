@@ -4,11 +4,12 @@ from marshmallow.exceptions import ValidationError
 
 from src.schemas.password_schema import PasswordSchema, PasswordVerificationResponseSchema
 
+
 password_controller = Blueprint('password_controller', __name__)
 
 
 @password_controller.route('/verify', methods=['POST'])
-def verify():
+def verify_password():
     try:
         data = PasswordSchema().load(request.json)
 
@@ -17,18 +18,36 @@ def verify():
             'noMatch': []
         }
 
+        password = data['password'].strip()
+
         for rule in data['rules']:
             match rule['rule']:
                 case 'minSize':
-                    if len(data['password']) > rule['value']:
+                    if len(password) < rule['value']:
                         response['noMatch'].append('minSize')
                         response['verify'] = False
 
                 case 'minUppercase':
-                    response['verify'] = False
+                    count = 0
+
+                    for char in password:
+                        if char.isupper():
+                            count += 1
+
+                    if count < rule['value']:
+                        response['noMatch'].append('minUppercase')
+                        response['verify'] = False
 
                 case 'minLowercase':
-                    response['verify'] = False
+                    count = 0
+
+                    for char in password:
+                        if char.islower():
+                            count += 1
+
+                    if count < rule['value']:
+                        response['noMatch'].append('minLowercase')
+                        response['verify'] = False
 
                 case 'minDigit':
                     response['verify'] = False
