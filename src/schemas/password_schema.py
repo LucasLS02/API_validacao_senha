@@ -19,3 +19,14 @@ class PasswordSchema(Schema):
     class Meta:
         fields = ('password', 'rules')
         ordered = True
+
+
+class PasswordVerificationResponseSchema(Schema):
+    verify = fields.Boolean(required=True, allow_none=False)
+    noMatch = fields.List(fields.String(validate=validate.OneOf(['minSize', 'minUppercase', 'minLowercase', 'minDigit',
+                                                                 'minSpecialChars', 'noRepeted'])),
+                          required=True, allow_none=False)
+
+    class Meta:
+        fields = ('verify', 'noMatch')
+        ordered = True
