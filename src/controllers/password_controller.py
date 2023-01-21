@@ -1,3 +1,5 @@
+import re
+
 from flask import Blueprint, request
 
 from marshmallow.exceptions import ValidationError
@@ -28,24 +30,34 @@ def verify_password():
                         response['verify'] = False
 
                 case 'minUppercase':
-                    count = 0
+                    if re.search('[A-Z]+', password):
+                        count = 0
 
-                    for char in password:
-                        if char.isupper():
-                            count += 1
+                        for char in password:
+                            if char.isupper():
+                                count += 1
 
-                    if count < rule['value']:
+                        if count < rule['value']:
+                            response['noMatch'].append('minUppercase')
+                            response['verify'] = False
+
+                    else:
                         response['noMatch'].append('minUppercase')
                         response['verify'] = False
 
                 case 'minLowercase':
-                    count = 0
+                    if re.search('[a-z]+', password):
+                        count = 0
 
-                    for char in password:
-                        if char.islower():
-                            count += 1
+                        for char in password:
+                            if char.islower():
+                                count += 1
 
-                    if count < rule['value']:
+                        if count < rule['value']:
+                            response['noMatch'].append('minLowercase')
+                            response['verify'] = False
+
+                    else:
                         response['noMatch'].append('minLowercase')
                         response['verify'] = False
 
