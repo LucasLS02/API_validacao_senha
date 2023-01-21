@@ -6,7 +6,6 @@ from marshmallow.exceptions import ValidationError
 
 from src.schemas.password_schema import PasswordSchema, PasswordVerificationResponseSchema
 
-
 password_controller = Blueprint('password_controller', __name__)
 
 
@@ -62,7 +61,19 @@ def verify_password():
                         response['verify'] = False
 
                 case 'minDigit':
-                    response['verify'] = False
+                    if re.search('\d', password):
+                        count = 0
+
+                        for char in password:
+                            if char.isdigit():
+                                count += 1
+
+                        if count < rule['value']:
+                            response['noMatch'].append('minDigit')
+                            response['verify'] = False
+                    else:
+                        response['noMatch'].append('minDigit')
+                        response['verify'] = False
 
                 case 'minSpecialChars':
                     response['verify'] = False
