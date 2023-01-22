@@ -56,6 +56,7 @@ def verify_password():
                             response['noMatch'].append('minLowercase')
                             response['verify'] = False
 
+
                     else:
                         response['noMatch'].append('minLowercase')
                         response['verify'] = False
@@ -76,7 +77,11 @@ def verify_password():
                         response['verify'] = False
 
                 case 'minSpecialChars':
-                    response['verify'] = False
+                    special_characters = re.findall("[!@#$%&*()_+=|<>?{}\\[\\]~-]", password)
+
+                    if len(special_characters) < rule['value']:
+                        response['noMatch'].append('minSpecialChars')
+                        response['verify'] = False
 
                 case 'noRepeted':
                     response['verify'] = False
