@@ -30,7 +30,7 @@ def verify_password():
                         response['verify'] = False
 
                 case 'minUppercase':
-                    if re.search('[A-Z]+', password):
+                    if re.search('[A-Z]+', password) or rule['value'] == 0:
                         count = 0
 
                         for char in password:
@@ -46,7 +46,7 @@ def verify_password():
                         response['verify'] = False
 
                 case 'minLowercase':
-                    if re.search('[a-z]+', password):
+                    if re.search('[a-z]+', password) or rule['value'] == 0:
                         count = 0
 
                         for char in password:
@@ -62,7 +62,7 @@ def verify_password():
                         response['verify'] = False
 
                 case 'minDigit':
-                    if re.search('\d', password):
+                    if re.search('\d', password) or rule['value'] == 0:
                         count = 0
 
                         for char in password:
