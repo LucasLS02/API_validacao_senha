@@ -6,6 +6,7 @@ from marshmallow.exceptions import ValidationError
 
 from src.schemas.password_schema import PasswordSchema, PasswordVerificationResponseSchema
 
+
 password_controller = Blueprint('password_controller', __name__)
 
 
@@ -56,7 +57,6 @@ def verify_password():
                             response['noMatch'].append('minLowercase')
                             response['verify'] = False
 
-
                     else:
                         response['noMatch'].append('minLowercase')
                         response['verify'] = False
@@ -84,7 +84,15 @@ def verify_password():
                         response['verify'] = False
 
                 case 'noRepeted':
-                    response['verify'] = False
+                    count = 0
+
+                    for char in range(0, len(password) - 1):
+                        if password[char] == password[char + 1]:
+                            count += 1
+
+                    if count > 0:
+                        response['noMatch'].append('noRepeted')
+                        response['verify'] = False
 
         response = PasswordVerificationResponseSchema().dump(response)
 
