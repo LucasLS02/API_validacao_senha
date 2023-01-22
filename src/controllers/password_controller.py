@@ -10,6 +10,12 @@ from src.schemas.password_schema import PasswordSchema, PasswordVerificationResp
 password_controller = Blueprint('password_controller', __name__)
 
 
+"""
+It receives a password and a list of rules, and returns a list of rules that the password does not match
+:return: A dictionary with the key 'data' and the value of the response variable.
+"""
+
+
 @password_controller.route('/verify', methods=['POST'])
 def verify_password():
     try:
